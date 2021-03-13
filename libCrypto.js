@@ -8255,9 +8255,8 @@ class Gost {
         [16, 3, 219, 167, 46, 52, 95, 246, 100, 59, 149, 51, 63, 39, 20, 31],
         [94, 167, 216, 88, 30, 20, 155, 97, 241, 106, 193, 69, 156, 237, 168, 32]];
 
-        this.keys = [];
-        // this.keys = this.keyGer(key) - для ТЕСТА
-        // this.keys = this.keyGer(this.share(this.strToInt(key), 32));
+        // this.keys = this.keyGer(key) //- для ТЕСТА
+        this.keys = this.keyGer(this.share(this.strToInt(key), 32));
     }
  
     keyGer(key) {
@@ -8338,9 +8337,10 @@ class Gost {
 
     share (indata, len) {
         if (len == 32) {
-            while (indata.length != 32) {
-                indata.push(0);
+            while (indata.length < 32) {
+                indata = indata.concat(indata);
             }
+            indata = indata.slice(0, 32);
         } else {
             while (indata.length != 16) {
                 indata.push(0);
@@ -8356,14 +8356,22 @@ class Gost {
         while(indata.length != 0) {
             if (indata.length < 16) { indata = this.share(indata, 16); }
             temp = this.encrypt(indata.slice(0, 16));
-            crypted = [...temp];
+            // crypted = [...temp];
+            crypted = crypted.concat(temp);
             indata = indata.slice(16);
         }
         return this.jsIntToStr(crypted);
     }
 
     dec(indata) {
-
+        indata = this.jsStrToInt(indata);
+        let decrypted = [];
+        while (indata.length != 0) {
+            decrypted = decrypted.concat(this.decrypt(indata.slice(0, 16)));
+            indata = indata.slice(16);
+        }
+        decrypted = decrypted.filter(item => item != 0);
+        return this.intToStr(decrypted);
     }
 }
 
@@ -8391,8 +8399,8 @@ const key = '8899aabbccddeeff0011223344556677fedcba98765432100123456789abcdef',
     ctkey = 'bb44e25378c73123a5f32f73cdb6e51772e9dd7416bcf45b755dbaa88e4a4043',
     pt = '1122334455667700ffeeddccbbaa9988',
     ct = '7f679d90bebc24305a468d42b9d4edcd';
-const test = new Test(),
-    crypto = new Gost(test.hexToInt(key));
+// const test = new Test(),
+//     crypto = new Gost(test.hexToInt(key));
 
 // let some = crypto.encrypt(test.hexToInt(pt));
 // console.log(test.intToHex(some));
@@ -8402,31 +8410,21 @@ let msg = {
     ct: '6;63;155;164;110;87;200;192;46;174;138;255;92;120;118;8;3;227;17;0;28;245;21;118;195;191;86;17;169;151;213;22'
 };
 
-let some5 = [1,2,3,4,5];
 
 // slice(0, 2) -  с нулевого взять 2 элемента
 // slice(2) - начиная с индекса 2 до конца
 
-let some6 = [1,2,3],
-    some7 = [4,5,6];
-
-// let some8 = [...some5, ...some7];
-// let some8 = [];
-// let numb = '7';
-// console.log(numb);
-// console.log(typeof(+numb));
-// console.log(some8);
 
 
 let DenTest = {
     key: 'Denis945518218456!',
-    pt: '7UU1fL2^$$6%^u2%D5!bQbgNW0Uwp3',
+    pt: '123',
     ct: '6;63;155;164;110;87;200;192;46;174;138;255;92;120;118;8;3;227;17;0;28;245;21;118;195;191;86;17;169;151;213;22'
 }
 
-let ttt = 'ABC';
+let spider = new Gost('vk');
+let some2 = spider.enc(DenTest.pt);
+let some3 = spider.dec(DenTest.ct);
 
-let spider = new Gost('Denis945518218456!');
-// console.log(spider.enc(DenTest.pt));
-console.log(spider.strToInt(ttt));
-// console.log(typeof(spider.X()));
+console.log(some2);
+
