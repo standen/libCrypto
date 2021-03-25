@@ -221,12 +221,6 @@ let msg = {
     ct: '6;63;155;164;110;87;200;192;46;174;138;255;92;120;118;8;3;227;17;0;28;245;21;118;195;191;86;17;169;151;213;22'
 };
 
-
-// slice(0, 2) -  с нулевого взять 2 элемента
-// slice(2) - начиная с индекса 2 до конца
-
-
-
 let DenTest = {
     key: 'Denis945518218456!',
     pt: '7UU1fL2^$$6%^u2%D5!bQbgNW0Uwp3',
@@ -237,5 +231,5 @@ let spider = new Gost(DenTest.key);
 let some2 = spider.enc(DenTest.pt);
 let some3 = spider.dec(DenTest.ct);
 
-console.log(some2);
+console.log(some2, some3);
 
