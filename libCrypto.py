@@ -8439,9 +8439,14 @@ class Test():
 		return 123
 
 if __name__ == '__main__':
-	pass1 = '7UU1fL2^$$6%^u2%D5!bQbgNW0Uwp3'
-	pass2 = '6;63;155;164;110;87;200;192;46;174;138;255;92;120;118;8;3;227;17;0;28;245;21;118;195;191;86;17;169;151;213;22'
-	crypt = Gost('vk')
-	# print(crypt.enc(pass1))
+	msg = {
+		'pt': 'Hello_Mikki',
+		'key': 'Denis',
+		'ct': '6;240;45;252;12;97;57;179;124;14;33;210;128;240;203;30'
+	}
+	crypt = Gost(msg['key'])
+	print(crypt.enc(msg['pt']))
+	print(crypt.dec(msg['ct']))
+
 
 # переделай функцию share. Что за дичь там с условиями?

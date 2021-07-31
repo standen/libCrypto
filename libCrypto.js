@@ -217,19 +217,12 @@ const key = '8899aabbccddeeff0011223344556677fedcba98765432100123456789abcdef',
 // console.log(test.intToHex(some));
 
 let msg = {
-    pt: '7UU1fL2^$$6%^u2%D5!bQbgNW0Uwp3',
-    ct: '6;63;155;164;110;87;200;192;46;174;138;255;92;120;118;8;3;227;17;0;28;245;21;118;195;191;86;17;169;151;213;22'
-};
-
-let DenTest = {
-    key: 'Denis945518218456!',
-    pt: '7UU1fL2^$$6%^u2%D5!bQbgNW0Uwp3',
-    ct: '6;63;155;164;110;87;200;192;46;174;138;255;92;120;118;8;3;227;17;0;28;245;21;118;195;191;86;17;169;151;213;22'
+    pt: 'Hello_Mikki',
+    key: 'Denis',
+    ct: '6;240;45;252;12;97;57;179;124;14;33;210;128;240;203;30'
 }
 
-let spider = new Gost(DenTest.key);
-let some2 = spider.enc(DenTest.pt);
-let some3 = spider.dec(DenTest.ct);
-
-console.log(some2, some3);
+let crypt = new Gost(msg.key);
+console.log(crypt.enc(msg.pt));
+console.log(crypt.dec(msg.ct));
 
