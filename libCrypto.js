@@ -2,6 +2,7 @@
 
 const { table } = require('./table');
 const { encode, decode, checkSymbols } = require('./encoding');
+const { passGer } = require('./passger');
 
 class Gost {
     constructor(key) {
@@ -220,6 +221,8 @@ let msg = {
     ct: '16;108;106;84;122;182;155;213;133;88;70;148;7;155;116;16'
 }
 
-let crypt = new Gost(msg.key);
-console.log(crypt.enc(msg.pt))
-console.log(crypt.dec(msg.ct))
+// let crypt = new Gost(msg.key);
+// console.log(crypt.enc(msg.pt))
+// console.log(crypt.dec(msg.ct))
+// console.log(passGer(25, false));
+// console.log(passGer(25, true));
