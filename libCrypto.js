@@ -1,9 +1,7 @@
-// Nekrasov/D
-// 14.03.2021
-
 "use strict";
 
 const { table } = require('./table');
+const { encode, decode, checkSymbols } = require('./encoding');
 
 class Gost {
     constructor(key) {
@@ -67,7 +65,7 @@ class Gost {
         [94, 167, 216, 88, 30, 20, 155, 97, 241, 106, 193, 69, 156, 237, 168, 32]];
 
         // this.keys = this.keyGer(key) //- для ТЕСТА
-        this.keys = this.keyGer(this.share(this.strToInt(key), 32));
+        this.keys = this.keyGer(this.share(encode(key), 32));
     }
  
     keyGer(key) {
@@ -161,7 +159,7 @@ class Gost {
     }
 
     enc(indata) {
-        indata = this.strToInt(indata);
+        indata = encode(indata);
         let crypted = [],
             temp = [];
         while(indata.length != 0) {
@@ -182,7 +180,7 @@ class Gost {
             indata = indata.slice(16);
         }
         decrypted = decrypted.filter(item => item != 0);
-        return this.intToStr(decrypted);
+        return decode(decrypted);
     }
 }
 
@@ -217,12 +215,11 @@ const key = '8899aabbccddeeff0011223344556677fedcba98765432100123456789abcdef',
 // console.log(test.intToHex(some));
 
 let msg = {
-    pt: 'Hello_Mikki',
-    key: 'Denis',
-    ct: '6;240;45;252;12;97;57;179;124;14;33;210;128;240;203;30'
+    pt: 'что-то',
+    key: 'ключ',
+    ct: '16;108;106;84;122;182;155;213;133;88;70;148;7;155;116;16'
 }
 
 let crypt = new Gost(msg.key);
-console.log(crypt.enc(msg.pt));
-console.log(crypt.dec(msg.ct));
-
+console.log(crypt.enc(msg.pt))
+console.log(crypt.dec(msg.ct))
