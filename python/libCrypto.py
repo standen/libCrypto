@@ -1,5 +1,3 @@
-# Author: Nekrasov/D
-# date: 08.12.2020
 import random
 
 class Gost: #34.12-2015
