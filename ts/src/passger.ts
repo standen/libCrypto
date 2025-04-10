@@ -1,13 +1,36 @@
-import { passwordSymbols } from "./encoding";
+import { vocab } from "./encoding";
 
-export function passGer(len: number = 20, symbol: boolean = true): string {
-  let temp = [...Array(len).keys()],
-    out: string = "",
-    mode: number = symbol ? 4 : 3;
+const passwordSymbols = [
+  vocab.numbers,
+  vocab.landEngSmall,
+  vocab.landEngBig,
+  vocab.symbols,
+];
 
-  shuffle(temp);
+const shuffle = (array: number[]): number[] => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
 
-  temp.forEach((item) => {
+const randomInteger = (min: number, max: number): number => {
+  const rand = min + Math.random() * (max + 1 - min);
+  return Math.floor(rand);
+};
+
+export const defCheckSymbols = (symbolString: string): boolean =>
+  Array.from(symbolString).every((item) =>
+    passwordSymbols.flat().includes(item)
+  );
+
+export const passGer = (len: number = 20, symbol: boolean = true): string => {
+  const mode: number = symbol ? 4 : 3;
+
+  let out: string = "";
+
+  shuffle([...Array(len).keys()]).forEach((item) => {
     switch (item % mode) {
       case 0:
         out +=
@@ -29,16 +52,4 @@ export function passGer(len: number = 20, symbol: boolean = true): string {
   });
 
   return out;
-}
-
-function shuffle(array: number[]): void {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-}
-
-function randomInteger(min: number, max: number): number {
-  let rand = min + Math.random() * (max + 1 - min);
-  return Math.floor(rand);
-}
+};

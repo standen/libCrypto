@@ -1,10 +1,5 @@
 import { table } from "./table";
-import {
-  encode,
-  decode,
-  hexStringToIntArray,
-  intArrayToHexString,
-} from "./encoding";
+import { encode, hexStringToIntArray } from "./encoding";
 
 export class Gost {
   table: number[];
@@ -14,7 +9,7 @@ export class Gost {
   keyConst: number[][];
   keys: number[][];
 
-  constructor(key: string) {
+  constructor(key: string, gost?: boolean) {
     this.table = table;
     this.arrayS = [
       252, 238, 221, 17, 207, 110, 49, 22, 251, 196, 250, 218, 35, 197, 4, 77,
@@ -120,7 +115,9 @@ export class Gost {
       [94, 167, 216, 88, 30, 20, 155, 97, 241, 106, 193, 69, 156, 237, 168, 32],
     ];
 
-    // this.keys = this.keyGer(this.share(encode(key), 32));
+    if (!gost) {
+      this.keys = this.keyGer(encode(this.validateKey(key)));
+    }
     this.keys = this.keyGer(hexStringToIntArray(key));
   }
 
@@ -194,74 +191,25 @@ export class Gost {
     return this.X(pt, this.keys[0]);
   }
 
-  // strToInt = indata => indata.split('').map(item => item.charCodeAt());
-
-  // intToStr = indata => indata.map(item => String.fromCharCode(item)).join('');
-
-  jsStrToInt = (indata: string): number[] =>
-    indata.split(";").map((item) => Number(item));
-
-  jsIntToStr = (indata: number[]): string =>
-    indata
-      .map((item, i, arr) =>
-        i != arr.length - 1 ? `${item.toString()};` : item.toString()
-      )
-      .join("");
-
-  share(indata: number[], len: number): number[] {
-    if (len == 32) {
-      while (indata.length < 32) {
-        indata = indata.concat(indata);
-      }
-      indata = indata.slice(0, 32);
-    } else {
-      while (indata.length != 16) {
-        indata.push(0);
-      }
+  /**
+   * Срезает или увеличивает длину ключа для неГОСТовой реализации.
+   */
+  validateKey = (symbolString: string): string => {
+    if (symbolString.length >= 32) {
+      return symbolString.slice(0, 32);
     }
-    return indata;
-  }
+    return symbolString.padEnd(32, symbolString);
+  };
 
-  enc(indata: string): string {
-    let data: number[] = encode(indata),
-      crypted: number[] = [],
-      temp: number[] = [];
-    while (data.length != 0) {
-      if (data.length < 16) {
-        data = this.share(data, 16);
-      }
-      temp = this.encrypt(data.slice(0, 16));
-      // crypted = [...temp];
-      crypted = crypted.concat(temp);
-      data = data.slice(16);
+  /**
+   * Увеличивает длину блока до 128 бит.
+   * Число 16 - потому что 8-битная кодировка.
+   */
+  shareBlock = (intArray: number[]): number[] => {
+    const result = [...intArray];
+    while (result.length < 16) {
+      result.push(255);
     }
-    return this.jsIntToStr(crypted);
-  }
-
-  dec(indata: string): string {
-    let data: number[] = this.jsStrToInt(indata),
-      decrypted: number[] = [];
-    while (data.length != 0) {
-      decrypted = decrypted.concat(this.decrypt(data.slice(0, 16)));
-      data = data.slice(16);
-    }
-    decrypted = decrypted.filter((item) => item != 0);
-    return decode(decrypted);
-  }
+    return result;
+  };
 }
-
-const key = "8899aabbccddeeff0011223344556677fedcba98765432100123456789abcdef",
-  ctkey = "bb44e25378c73123a5f32f73cdb6e51772e9dd7416bcf45b755dbaa88e4a4043",
-  pt = "1122334455667700ffeeddccbbaa9988",
-  ct = "7f679d90bebc24305a468d42b9d4edcd";
-
-let msg = {
-  pt: "что-то",
-  key: "ключ",
-  ct: "16;108;106;84;122;182;155;213;133;88;70;148;7;155;116;16",
-};
-
-const crypt = new Gost(key);
-
-console.log(intArrayToHexString(crypt.encrypt(hexStringToIntArray(pt))));
-console.log(intArrayToHexString(crypt.decrypt(hexStringToIntArray(ct))));
