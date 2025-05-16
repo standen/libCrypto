@@ -1,4 +1,4 @@
-import { table } from "./table";
+import { table2 } from "./table";
 import { encode, hexStringToIntArray } from "./encoding";
 
 export class Gost {
@@ -10,7 +10,7 @@ export class Gost {
   keys: number[][];
 
   constructor(key: string, gost?: boolean) {
-    this.table = table;
+    this.table = table2;
     this.arrayS = [
       252, 238, 221, 17, 207, 110, 49, 22, 251, 196, 250, 218, 35, 197, 4, 77,
       233, 119, 240, 219, 147, 46, 153, 186, 23, 54, 241, 187, 20, 205, 95, 193,

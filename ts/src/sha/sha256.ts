@@ -1,4 +1,4 @@
-async function sha256(message: string) {
+export const sha256 = async (message: string) => {
   // Преобразуем сообщение в Uint8Array
   const encoder = new TextEncoder();
   const data = encoder.encode(message);
@@ -13,4 +13,4 @@ async function sha256(message: string) {
     .join("");
 
   return hashHex;
-}
+};
