@@ -1,0 +1,8 @@
+{
+  "name": "@standen/crypt",
+  "version": "0.0.1",
+  "author": "standen",
+  "devDependencies": {
+    "@types/node": "24.10.1"
+  }
+}
