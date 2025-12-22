@@ -1,10 +1,10 @@
-const ALPHABET_ENG = "abcdefghijklmnopqrstuvwxyz";
+const ALPHABET_EN = "abcdefghijklmnopqrstuvwxyz";
 const ALPHABET_RU = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
 
 type T_ALPABET = Readonly<{
   digits: string;
-  engSmall: string;
-  engBig: string;
+  enSmall: string;
+  enBig: string;
   ruSmall: string;
   ruBig: string;
   specChars: string;
@@ -13,8 +13,8 @@ type T_ALPABET = Readonly<{
 
 export const vocab: T_ALPABET = {
   digits: "0123456789",
-  engSmall: ALPHABET_ENG,
-  engBig: ALPHABET_ENG.toUpperCase(),
+  enSmall: ALPHABET_EN,
+  enBig: ALPHABET_EN.toUpperCase(),
   ruSmall: ALPHABET_RU,
   ruBig: ALPHABET_RU.toUpperCase(),
   specChars: "~`'\"!@#№$;:,^%&?*()-+=|\\<>[]{}._ ",
