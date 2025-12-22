@@ -1,15 +1,11 @@
 import { TABLE_L_OPERATION } from "./tableL";
 import { KEYS_CONSTS, TABLE_L, TABLE_S, TABLE_S_INV } from "./operationsConsts";
 
-import {
-  uint8ArrayToStringAlphabet,
-  uint8ArrayToStringHex,
-  stringAlphabetToUint8Array,
-  stringHexToUint8Array,
-} from "../encoding";
+import { Encoder } from "../encoding";
 
 export class Kuznechik {
   private keys: Uint8Array[];
+  private encode = new Encoder();
 
   constructor(key: Uint8Array) {
     this.keys = this.generateKeys(this.shareKey(key));
@@ -143,12 +139,12 @@ export class Kuznechik {
     let result: string = "";
 
     const plainTextBlocks: Uint8Array[] = this.splitInto16ByteBlocks(
-      stringAlphabetToUint8Array(pt)
+      this.encode.textToBytes(pt)
     );
 
     for (const plainTextBlock of plainTextBlocks) {
       const cipherText = this.encrypt(plainTextBlock);
-      result += uint8ArrayToStringHex(cipherText);
+      result += this.encode.bytesToHex(cipherText);
     }
 
     return result;
@@ -161,14 +157,14 @@ export class Kuznechik {
     let result: string = "";
 
     const cipherTextBlocks: Uint8Array[] = this.splitInto16ByteBlocks(
-      stringHexToUint8Array(ct)
+      this.encode.hexToBytes(ct)
     );
 
     for (const cipherTextBlock of cipherTextBlocks) {
       const cipherText = this.decrypt(cipherTextBlock).filter(
         (item) => item !== 255
       );
-      result += uint8ArrayToStringAlphabet(cipherText);
+      result += this.encode.bytesToText(cipherText);
     }
 
     return result;

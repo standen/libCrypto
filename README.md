@@ -3,22 +3,19 @@
 ```typescript
 import { Kuznechik } from "./gostKuznechik";
 
-import { uint8ArrayToStringHex, stringHexToUint8Array } from "./encoding";
+import { Encoder } from "./encoding";
 
 const key = "8899aabbccddeeff0011223344556677fedcba98765432100123456789abcdef";
 const plainText = "1122334455667700ffeeddccbbaa9988";
 const cipherText = "7f679d90bebc24305a468d42b9d4edcd";
 
-const crypto = new Kuznechik(stringHexToUint8Array(key));
+const encode = new Encoder();
 
-console.log(
-  uint8ArrayToStringHex(crypto.encrypt(stringHexToUint8Array(plainText)))
-);
+const crypto = new Kuznechik(encode.hexToBytes(key));
 
-console.log(
-  uint8ArrayToStringHex(crypto.decrypt(stringHexToUint8Array(cipherText)))
-);
+console.log(encode.bytesToHex(crypto.encrypt(encode.hexToBytes(plainText))));
 
+console.log(encode.bytesToHex(crypto.decrypt(encode.hexToBytes(cipherText))));
 ```
 
 ## Использование утилиты
@@ -26,15 +23,16 @@ console.log(
 ```typescript
 import { Kuznechik } from "./gostKuznechik";
 
-import { stringAlphabetToUint8Array } from "./encoding";
+import { Encoder } from "./encoding";
 
 const key = "мой_ключ";
 const plainText = "открытый_текст";
 const cipherText = "зашифрованный_текст";
 
-const crypto = new Kuznechik(stringAlphabetToUint8Array(key));
+const encode = new Encoder();
+
+const crypto = new Kuznechik(encode.textToBytes(key));
 
 console.log(crypto.enc(plainText));
 console.log(crypto.dec(cipherText));
-
 ```

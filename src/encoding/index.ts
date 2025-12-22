@@ -1,3 +1,2 @@
 export * from "./alphabet";
-export * from "./encoderAlphabet";
-export * from "./encoderHex";
+export * from "./encoder";
