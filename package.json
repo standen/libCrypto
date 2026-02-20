@@ -1,14 +1,19 @@
 {
-  "name": "@standen/crypt",
+  "name": "@standen/crypto",
   "version": "0.0.1",
-  "author": "standen",
+  "main": "./src/index.ts",
+  "type": "module",
+  "repository": "https://github.com/standen/crypto",
+  "author": "Standen",
+  "license": "MIT",
   "devDependencies": {
-    "@types/node": "24.10.1",
+    "@types/node": "^25.3.0",
     "typescript": "^5.9.3"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/standen/libCrypto.git"
+  "scripts": {
+    "build": "tsc"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@standen/encoding": "^0.0.4"
+  }
 }

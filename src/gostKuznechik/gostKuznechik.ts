@@ -1,7 +1,7 @@
 import { TABLE_L_OPERATION } from "./tableL";
 import { KEYS_CONSTS, TABLE_L, TABLE_S, TABLE_S_INV } from "./operationsConsts";
 
-import { Encoder } from "../encoding";
+import { Encoder } from "@standen/encoding";
 
 export class Kuznechik {
   private keys: Uint8Array[];
