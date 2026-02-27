@@ -7,8 +7,14 @@ export class Kuznechik {
   private keys: Uint8Array[];
   private encode = new Encoder();
 
-  constructor(key: Uint8Array) {
-    this.keys = this.generateKeys(this.shareKey(key));
+  constructor(key: Uint8Array | string) {
+    if (typeof key === "string") {
+      this.keys = this.generateKeys(
+        this.shareKey(this.encode.textToBytes(key)),
+      );
+    } else {
+      this.keys = this.generateKeys(this.shareKey(key));
+    }
   }
 
   private shareBlock = (block: Uint8Array): Uint8Array => {
