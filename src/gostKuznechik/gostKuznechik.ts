@@ -41,6 +41,9 @@ export class Kuznechik {
     return blocks;
   };
 
+  /**
+   * Если длина ключа меньше требуемой
+   */
   private shareKey = (key: Uint8Array): Uint8Array => {
     let temp = [...key];
     while (temp.length < 32) {
@@ -139,7 +142,7 @@ export class Kuznechik {
     let result: string = "";
 
     const plainTextBlocks: Uint8Array[] = this.splitInto16ByteBlocks(
-      this.encode.textToBytes(pt)
+      this.encode.textToBytes(pt),
     );
 
     for (const plainTextBlock of plainTextBlocks) {
@@ -157,12 +160,12 @@ export class Kuznechik {
     let result: string = "";
 
     const cipherTextBlocks: Uint8Array[] = this.splitInto16ByteBlocks(
-      this.encode.hexToBytes(ct)
+      this.encode.hexToBytes(ct),
     );
 
     for (const cipherTextBlock of cipherTextBlocks) {
       const cipherText = this.decrypt(cipherTextBlock).filter(
-        (item) => item !== 255
+        (item) => item !== 255,
       );
       result += this.encode.bytesToText(cipherText);
     }
@@ -170,3 +173,17 @@ export class Kuznechik {
     return result;
   };
 }
+
+const gostEncrypt = (key: string, pt: string) => {
+  const encode = new Encoder();
+  const crypt = new Kuznechik(encode.hexToBytes(key));
+  return encode.bytesToHex(crypt.encrypt(encode.hexToBytes(pt)));
+};
+
+const gostDecrypt = (key: string, ct: string) => {
+  const encode = new Encoder();
+  const crypt = new Kuznechik(encode.hexToBytes(key));
+  return encode.bytesToHex(crypt.decrypt(encode.hexToBytes(ct)));
+};
+
+export const GOST = { gostEncrypt, gostDecrypt };

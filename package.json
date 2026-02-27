@@ -1,6 +1,6 @@
 {
   "name": "@standen/crypto",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./src/index.ts",
   "type": "module",
   "repository": "https://github.com/standen/crypto",
@@ -14,6 +14,6 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@standen/encoding": "^0.0.4"
+    "@standen/encoding": "^0.0.5"
   }
 }
