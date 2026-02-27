@@ -18,7 +18,7 @@ import { Kuznechik } from "@standen/crypto";
 
 const key = "мой_ключ";
 const plainText = "открытый_текст";
-const cipherText = "зашифрованный_текст";
+const cipherText = "e6be3414d8124f03bda4b6df2477c8cd";
 
 const crypto = new Kuznechik(key);
 
